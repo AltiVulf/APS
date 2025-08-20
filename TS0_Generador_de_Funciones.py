@@ -1,4 +1,3 @@
-#%% DESCRIPCIÓN
 # Generador de señales: Senoidales
 #  En este programa vamos a parametrizar y llamar a una función "funcion_senoidal"
 
@@ -9,7 +8,8 @@ import matplotlib.pyplot as plt # La uso para imprimir el gráfico del seno
 
 #%% Defino la función funcion_senoidal
 def funcion_senoidal(vmax, dc, ff, ph, nn, fs): 
-  # funcion_senoidal(vMax, vDc, frec, fase, #_muestras, frec_muestreo)
+  # funcion_senoidal(amplitud, offset, frec, fase, #_muestras, frec_muestreo)
+    
     ts = 1/fs # tiempo/periodo de muestreo
     df = fs/nn # resolución espectral
     
@@ -21,7 +21,7 @@ def funcion_senoidal(vmax, dc, ff, ph, nn, fs):
 
 #%% Defino funcion alternativa para la funcion senoidal
 def funcion_senoidal_arange(vmax, dc, ff, ph, fs):
-    # funcion_senoidal(vMax, vDc, frec, fase, frec_muestreo)
+    # funcion_senoidal(amplitud, offset, frec, fase, frec_muestreo)
 
     ts = 1/fs # periodo de muestreo
     T = 1/ff # periodo de la señal
