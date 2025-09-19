@@ -5,7 +5,17 @@ Created on Wed Aug 28 2025
 
 Descripción:
 ------------
-    
+    En este trabajo práctico se realizó el análisis 
+    de diferentes sisemas LTI excitados con señales 
+    realizadas en el trabajo semanal anterior con un 
+    generador de señales, graficando las respuestas 
+    resultantes a dichas entradas. Se encontró la 
+    respuesta al impulso de los sistemas planteados 
+    a partir de la función Delta de Dirac utilizando 
+    propiedades de los sistemas LTI. Por último, se 
+    intentó discretizar la ecuación diferencial 
+    correspondiente al modelo Windkessel que describe 
+    la dinámica presión-flujo del sistema sanguíneo.
 
 """
 
