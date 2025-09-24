@@ -65,7 +65,7 @@ def dB(X):
 def zero_padding(sig, n_zeros = 9):
     Nsig = len(sig)
     padded = np.concatenate([sig, np.zeros(n_zeros * Nsig)]) # Relleno padded con n cantidad de ceros
-    return fft(padded) # Armo la densidad espectral de la fft
+    return fft(padded) # Armo la densidad espectral con la fft
 
 #%%############
 ## Punto (1) ##

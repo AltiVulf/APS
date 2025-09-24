@@ -62,7 +62,7 @@ def dB(X):
     X_max = np.max(X_abs) if np.max(X_abs)>0 else 1 # Calculo el máximo de la funcion para poder trasladar las funciones al mismo eje
     return 20 * np.log10(X_abs / X_max)
 
-#%% Función para generar distintos tipos de ruido
+# Función para generar distintos tipos de ruido
 def ruido(tipo, long = N, v_min = -1, v_max = 1, desv_med = 0, desv_est = 0.1):
     if tipo == 'random':
         ruido = np.random.randn(long)
@@ -71,6 +71,8 @@ def ruido(tipo, long = N, v_min = -1, v_max = 1, desv_med = 0, desv_est = 0.1):
     elif tipo == 'normal':
         ruido = np.random.normal(desv_med, desv_est, long)
     return ruido
+
+plt.close("all")
 
 #%%############
 ## Punto (1) ##
@@ -207,7 +209,6 @@ plt.plot(dB(a_flattop_var), alpha = transparencia, color = 'blue', label = 'Flat
 plt.plot(dB(a_blackmanharris_var), alpha = transparencia, color = 'green', label = 'BlackmanHarris')
 plt.plot(dB(a_hamming_var), alpha = transparencia, color = 'yellow', label = 'Hamming')
 plt.legend()
-
 
 # # %% Ploteos
 # plt.figure(1)
