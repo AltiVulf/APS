@@ -17,7 +17,9 @@ igualdad trigonométrica planteada.
 
 #%% Importo los módulos y bibliotecas que voy a utilizar
 import numpy as np
+import random
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker # Para poder graficar con ejes que tienen valores muy pequeños
 import scipy.signal as sig
 import scipy.io.wavfile as waves
 from tabulate import tabulate
@@ -92,13 +94,13 @@ def plotear_fig1_a_fig6 ():
     plt.plot(t1, x1, 'o--', color = 'teal')
     plt.xlim(0, T_simulacion)
     plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
+    plt.ylabel("Amplitud")
     # Añado una leyenda con los datos sobre la señal:
     potencia = np.sum(x1 ** 2)/(2*N+1)
     info_fig1 = (
         f"Tiempo entre muestras: {ts} s\n"
         f"Número de muestras: {N}\n"
-        f"Potencia: {potencia} W"
+        f"Potencia: {potencia}"
     )
     plt.figtext(0.5, -0.1, info_fig1, fontsize=12, ha="center", va="center",
                 bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
@@ -110,12 +112,12 @@ def plotear_fig1_a_fig6 ():
     plt.plot(t2, x2, 'o--', color = 'teal')
     plt.xlim(0, T_simulacion)
     plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
+    plt.ylabel("Amplitud")
     potencia = np.sum(x2 ** 2)/(2*N+1)
     info_fig2 = (
         f"Tiempo entre muestras: {ts} s\n"
         f"Número de muestras: {N}\n"
-        f"Potencia: {potencia} W"
+        f"Potencia: {potencia}"
     )
     plt.figtext(0.5, -0.1, info_fig2, fontsize=12, ha="center", va="center",
                 bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
@@ -127,12 +129,12 @@ def plotear_fig1_a_fig6 ():
     plt.plot(t1, x_modulada, 'o--', color = 'teal')
     plt.xlim(0, T_simulacion)
     plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
+    plt.ylabel("Amplitud")
     potencia = np.sum(x_modulada ** 2)/(2*N+1)
     info_fig3 = (
         f"Tiempo entre muestras: {ts} s\n"
         f"Número de muestras: {N}\n"
-        f"Potencia: {potencia} W"
+        f"Potencia: {potencia}"
     )
     plt.figtext(0.5, -0.1, info_fig3, fontsize=12, ha="center", va="center",
                 bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
@@ -144,12 +146,12 @@ def plotear_fig1_a_fig6 ():
     plt.plot(t1, x_recortada, 'o--', color = 'teal')
     plt.xlim(0, T_simulacion)
     plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
+    plt.ylabel("Amplitud")
     potencia = np.sum(x_recortada ** 2)/(2*N+1)
     info_fig4 = (
         f"Tiempo entre muestras: {ts} s\n"
         f"Número de muestras: {N}\n"
-        f"Potencia: {potencia} W"
+        f"Potencia: {potencia}"
     )
     plt.figtext(0.5, -0.1, info_fig4, fontsize=12, ha="center", va="center",
                 bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
@@ -161,12 +163,12 @@ def plotear_fig1_a_fig6 ():
     plt.plot(tsq1, xsq1, 'o--', color = 'teal')
     plt.xlim(0, T_simulacion)
     plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
+    plt.ylabel("Amplitud")
     potencia = np.sum(xsq1 ** 2)
     info_fig5 = (
         f"Tiempo entre muestras: {ts} s\n"
         f"Número de muestras: {N}\n"
-        f"Potencia: {potencia} W"
+        f"Potencia: {potencia}"
     )
     plt.figtext(0.5, -0.1, info_fig5, fontsize=12, ha="center", va="center",
                 bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
@@ -178,12 +180,12 @@ def plotear_fig1_a_fig6 ():
     plt.plot(tsq2, xsq2, 'o--', color = 'teal')
     plt.xlim(0, T_simulacion)
     plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
+    plt.ylabel("Amplitud")
     potencia = np.sum(xsq2 ** 2)
     info_fig6 = (
         f"Tiempo entre muestras: {ts} s\n"
         f"Número de muestras: {N}\n"
-        f"Potencia: {potencia} W"
+        f"Potencia: {potencia}"
     )
     plt.figtext(0.5, -0.1, info_fig6, fontsize=12, ha="center", va="center",
                 bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
@@ -218,55 +220,38 @@ Xcorr_1_rec = sig.correlate(x1, x_recortada, mode = 'full')
 Xcorr_1_sq1 = sig.correlate(x1, xsq1, mode = 'full')
 Xcorr_1_sq2 = sig.correlate(x1, xsq2, mode = 'full')
 
-def plotear_fig7_a_fig12():
-    plt.figure(7)
-    plt.title('Figura 7: Autocorrelación de la Fig.1 consigo misma')
-    plt.grid(True)
-    plt.plot(Xcorr_11, 'o--', color = 'teal')
-    plt.xlim(0, 2000)
-    plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
-    
-    plt.figure(8)
-    plt.title('Figura 8: Autocorrelación de la Fig.1 con la Fig.2')
-    plt.grid(True)
-    plt.plot(Xcorr_12, 'o--', color = 'teal')
-    plt.xlim(0, 2000)
-    plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
-    
-    plt.figure(9)
-    plt.title('Figura 9: Autocorrelación de la Fig.1 con la Fig.3')
-    plt.grid(True)
-    plt.plot(Xcorr_1_mod, 'o--', color = 'teal')
-    plt.xlim(0, 2000)
-    plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
-    
-    plt.figure(10)
-    plt.title('Figura 10: Autocorrelación de la Fig.1 con la Fig.4')
-    plt.grid(True)
-    plt.plot(Xcorr_1_rec, 'o--', color = 'teal')
-    plt.xlim(0, 2000)
-    plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
-    
-    plt.figure(11)
-    plt.title('Figura 11: Autocorrelación de la Fig.1 con la Fig.5')
-    plt.grid(True)
-    plt.plot(Xcorr_1_sq1, 'o--', color = 'teal')
-    plt.xlim(0, 2000)
-    plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
-    
-    plt.figure(12)
-    plt.title('Figura 12: Autocorrelación de la Fig.1 con la Fig.6')
-    plt.grid(True)
-    plt.plot(Xcorr_1_sq2, 'o--', color = 'teal')
-    plt.xlim(0, 2000)
-    plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
+eje_centrado = np.arange(-N+1, N) * ts
 
+def plotear_fig7_a_fig12():
+    figuras = [
+        ("Figura 7: Autocorrelación de la Fig.1 consigo misma", Xcorr_11),
+        ("Figura 8: Autocorrelación de la Fig.1 con la Fig.2", Xcorr_12),
+        ("Figura 9: Autocorrelación de la Fig.1 con la Fig.3", Xcorr_1_mod),
+        ("Figura 10: Autocorrelación de la Fig.1 con la Fig.4", Xcorr_1_rec),
+        ("Figura 11: Autocorrelación de la Fig.1 con la Fig.5", Xcorr_1_sq1),
+        ("Figura 12: Autocorrelación de la Fig.1 con la Fig.6", Xcorr_1_sq2)
+    ]
+    
+    for i, (titulo, data) in enumerate(figuras, start=7):
+        plt.figure(i)
+        plt.title(titulo)
+        plt.grid(True)
+        plt.plot(eje_centrado, data, '.--', color='teal')
+        plt.xlim(-T_simulacion, T_simulacion)
+        plt.xlabel("Tiempo [s]")
+        plt.ylabel("Amplitud")
+
+        # Ajuste del eje X para evitar la superposición de los valores
+        ax = plt.gca()
+        ax.xaxis.set_major_formatter(ticker.ScalarFormatter(useMathText=True))
+        ax.ticklabel_format(axis='x', style='sci', scilimits=(-3, 3))  # notación científica
+        ax.xaxis.set_major_locator(ticker.MaxNLocator(6))  # máx 6 ticks en X
+
+        plt.tight_layout()
+
+#%%############
+## Punto (4) ##
+###############
 #%% Mostrar que la igualdad se cumple
 frec = 2000
 # N = 1000 (definido en linea 24)
@@ -284,7 +269,18 @@ def printear_demostracion():
         print("Los términos son iguales, por lo que la igualdad se cumple.\n")
     else:
         print("Los terminos no son iguales, por lo que la igualdad no se cumple.\n")
-        
+
+def plotear_fig13():
+    plt.figure(13)
+    plt.title('Figura 13: Demostración de la propiedad trigonométrica')
+    plt.grid(True)
+    plt.plot(termino_izq, color = 'red')
+    plt.plot(termino_der, color = 'blue')
+    plt.xlim(0, N)
+    plt.xlabel("Tiempo [s]")
+    plt.ylabel("Amplitud")
+    plt.tight_layout()
+
 #%%############
 ##   Bonus   ##
 ###############
@@ -305,6 +301,5 @@ def plotear_bonus():
     plt.xlim(0, t_final_wav)
     plt.xlabel('Tiempo (s)')
     plt.ylabel('Sonido')
-    
-# %% Ploteo todo
+
 
