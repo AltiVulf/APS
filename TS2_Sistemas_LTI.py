@@ -36,7 +36,7 @@ tt = n/fs # Grilla temporal de sampleo
 
 #%% Defino la función Delta
 def delta():
-    x = np.zeros(N, dtype = np.complex128)
+    x = np.zeros(N, dtype = float)
     x[1] = 1
     return x
 
@@ -88,13 +88,13 @@ def plotear_fig1_a_fig6 ():
     plt.plot(tt, respuesta_señal_f1, 'o--', color = 'teal')
     plt.xlim(0, T_simulacion)
     plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
+    plt.ylabel("Amplitud")
     # Añado una leyenda con los datos sobre la señal:
     potencia = np.sum(respuesta_señal_f1 ** 2)/(2*N+1)
     info_fig1 = (
         f"Frecuencia de muestreo: {fs} s\n"
         f"Tiempo entre muestras: {ts} s\n"
-        f"Potencia: {potencia:.3f} W"
+        f"Potencia: {potencia:.3f}"
     )
     plt.figtext(0.5, -0.1, info_fig1, fontsize=12, ha="center", va="center",
                 bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
@@ -106,12 +106,12 @@ def plotear_fig1_a_fig6 ():
     plt.plot(tt, respuesta_señal_f2, 'o--', color = 'teal')
     plt.xlim(0, T_simulacion)
     plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
+    plt.ylabel("Amplitud")
     potencia = np.sum(respuesta_señal_f2 ** 2)/(2*N+1)
     info_fig2 = (
         f"Frecuencia de muestreo: {fs} s\n"
         f"Tiempo entre muestras: {ts} s\n"
-        f"Potencia: {potencia:.3f} W"
+        f"Potencia: {potencia:.3f}"
     )
     plt.figtext(0.5, -0.1, info_fig2, fontsize=12, ha="center", va="center",
                 bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
@@ -123,12 +123,12 @@ def plotear_fig1_a_fig6 ():
     plt.plot(tt, respuesta_señal_f3, 'o--', color = 'teal')
     plt.xlim(0, T_simulacion)
     plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
+    plt.ylabel("Amplitud")
     potencia = np.sum(respuesta_señal_f3 ** 2)/(2*N+1)
     info_fig3 = (
         f"Frecuencia de muestreo: {fs} s\n"
         f"Tiempo entre muestras: {ts} s\n"
-        f"Potencia: {potencia:.3f} W"
+        f"Potencia: {potencia:.3f}"
     )
     plt.figtext(0.5, -0.1, info_fig3, fontsize=12, ha="center", va="center",
                 bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
@@ -140,12 +140,12 @@ def plotear_fig1_a_fig6 ():
     plt.plot(tt, respuesta_señal_f4, 'o--', color = 'teal')
     plt.xlim(0, T_simulacion)
     plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
+    plt.ylabel("Amplitud")
     potencia = np.sum(respuesta_señal_f4 ** 2)/(2*N+1)
     info_fig4 = (
         f"Frecuencia de muestreo: {fs} s\n"
         f"Tiempo entre muestras: {ts} s\n"
-        f"Potencia: {potencia:.3f} W"
+        f"Potencia: {potencia:.3f}"
     )
     plt.figtext(0.5, -0.1, info_fig4, fontsize=12, ha="center", va="center",
                 bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
@@ -157,12 +157,12 @@ def plotear_fig1_a_fig6 ():
     plt.plot(tt, respuesta_señal_f5, 'o--', color = 'teal')
     plt.xlim(0, T_simulacion)
     plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
+    plt.ylabel("Amplitud")
     potencia = np.sum(respuesta_señal_f5 ** 2)
     info_fig5 = (
         f"Frecuencia de muestreo: {fs} s\n"
         f"Tiempo entre muestras: {ts} s\n"
-        f"Potencia: {potencia:.3f} W"
+        f"Potencia: {potencia:.3f}"
     )
     plt.figtext(0.5, -0.1, info_fig5, fontsize=12, ha="center", va="center",
                 bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
@@ -174,12 +174,12 @@ def plotear_fig1_a_fig6 ():
     plt.plot(tt, respuesta_señal_f6, 'o--', color = 'teal')
     plt.xlim(0, T_simulacion)
     plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
-    potencia = np.sum(respuesta_señal_f6 ** 2)
+    plt.ylabel("Amplitud")
+    energia = np.sum(respuesta_señal_f6 ** 2)
     info_fig6 = (
         f"Frecuencia de muestreo: {fs} s\n"
         f"Tiempo entre muestras: {ts} s\n"
-        f"Potencia: {potencia:.3f} W"
+        f"Energía: {energia:.3f}"
     )
     plt.figtext(0.5, -0.1, info_fig6, fontsize=12, ha="center", va="center",
                 bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
@@ -188,28 +188,80 @@ def plotear_fig1_a_fig6 ():
 #%% Busco la respuesta al impulso: Para ello, busco excitar a mi sistema LTI con una delta
 h_punto1 = ec_LTI_punto_1(delta(), N)
 respuesta_señal_f1_con_h_punto1 = np.convolve(TS1.x1, h_punto1, mode='full')
+respuesta_señal_f2_con_h_punto1 = np.convolve(TS1.x2, h_punto1, mode='full')
+respuesta_señal_f3_con_h_punto1 = np.convolve(TS1.x_modulada, h_punto1, mode='full')
+respuesta_señal_f4_con_h_punto1 = np.convolve(TS1.x_recortada, h_punto1, mode='full')
+respuesta_señal_f5_con_h_punto1 = np.convolve(TS1.xsq1, h_punto1, mode='full')
+respuesta_señal_f6_con_h_punto1 = np.convolve(TS1.xsq2, h_punto1, mode='full')
 
 #%% Imprimo la respuesta del sistema tras convolucionar la señal f1 con con la respuesta al impulso del sistema
 
-def plotear_fig7():
-    plt.figure(7)
-    plt.title('Figura 7: Respuesta de f1 a partir de convolución con h (Punto 1)')
-    plt.grid(True)
-    plt.plot(respuesta_señal_f1_con_h_punto1, 'o--', color = 'teal')
-    plt.xlim(0, 2000)
-    plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
-    # Añado una leyenda con los datos sobre la señal:
-    potencia = np.sum(respuesta_señal_f1_con_h_punto1 ** 2)/(2*N+1)
-    info_fig1 = (
-        f"Frecuencia de muestreo: {fs} s\n"
-        f"Tiempo entre muestras: {ts} s\n"
-        f"Potencia: {potencia:.3f} W"
-    )
-    plt.figtext(0.5, -0.1, info_fig1, fontsize=12, ha="center", va="center",
-                bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
-    plt.tight_layout()
+def plotear_fig7_a_fig12():
+    # plt.figure(7)
+    # plt.title('Figura 7: Respuesta de f1 a partir de convolución con h (Punto 1)')
+    # plt.grid(True)
+    # plt.plot(respuesta_señal_f1_con_h_punto1, 'o--', color = 'teal')
+    # plt.xlim(0, 2000)
+    # plt.xlabel("Tiempo [s]")
+    # plt.ylabel("Amplitud")
+    # # Añado una leyenda con los datos sobre la señal:
+    # potencia = np.sum(respuesta_señal_f1_con_h_punto1 ** 2)/(2*N+1)
+    # info_fig1 = (
+    #     f"Frecuencia de muestreo: {fs} s\n"
+    #     f"Tiempo entre muestras: {ts} s\n"
+    #     f"Potencia: {potencia:.3f}"
+    # )
+    # plt.figtext(0.5, -0.1, info_fig1, fontsize=12, ha="center", va="center",
+    #             bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
+    # plt.tight_layout()
     
+    figuras = [
+        ("Figura 7: Respuesta de f1 a partir de convolución con h (Punto 1)", respuesta_señal_f1_con_h_punto1),
+        ("Figura 8: Respuesta de f2 a partir de convolución con h (Punto 1)", respuesta_señal_f2_con_h_punto1),
+        ("Figura 9: Respuesta de f3 a partir de convolución con h (Punto 1)", respuesta_señal_f3_con_h_punto1),
+        ("Figura 10: Respuesta de f4 a partir de convolución con h (Punto 1)", respuesta_señal_f4_con_h_punto1),
+        ("Figura 11: Respuesta de f5 a partir de convolución con h (Punto 1)", respuesta_señal_f5_con_h_punto1),
+
+    ]
+    
+    for i, (titulo, data) in enumerate(figuras, start=7):
+        plt.figure(i)
+        figura = i-6
+        plt.title(f"Figura {i}: Respuesta de f{figura} a partir de convolución con h (Punto 1)")
+        plt.grid(True)
+        plt.plot(data, 'o--', color='teal')
+        plt.xlim(0, 2000)
+        plt.xlabel("Tiempo [s]")
+        plt.ylabel("Amplitud")
+        # Añado una leyenda con los datos sobre la señal:
+        potencia = np.sum(data ** 2)/(2*N+1)
+        info_fig1 = (
+            f"Frecuencia de muestreo: {fs} s\n"
+            f"Tiempo entre muestras: {ts} s\n"
+            f"Potencia: {potencia:.3f}"
+        )
+        plt.figtext(0.5, -0.1, info_fig1, fontsize=12, ha="center", va="center",
+                    bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
+        plt.tight_layout()
+    
+        plt.figure(12)
+        plt.title('Figura 12: Respuesta de f6 a partir de convolución con h (Punto 1)')
+        plt.grid(True)
+        plt.plot(respuesta_señal_f6_con_h_punto1, 'o--', color = 'teal')
+        plt.xlim(0, 2000)
+        plt.xlabel("Tiempo [s]")
+        plt.ylabel("Amplitud")
+        # Añado una leyenda con los datos sobre la señal:
+        energia = np.sum(respuesta_señal_f6_con_h_punto1 ** 2)/(2*N+1)
+        info_fig1 = (
+            f"Frecuencia de muestreo: {fs} s\n"
+            f"Tiempo entre muestras: {ts} s\n"
+            f"Energia: {energia:.3f}"
+        )
+        plt.figtext(0.5, -0.1, info_fig1, fontsize=12, ha="center", va="center",
+                    bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
+        plt.tight_layout()
+        
 #%%############
 ## Punto (2) ##
 ###############
@@ -217,7 +269,7 @@ def plotear_fig7():
 def ec1_LTI_punto_2(x, N):
     # x: Señal de entrada, N: numero de muestras
     
-    y = np.zeros(N, dtype = np.complex128)
+    y = np.zeros(N, dtype = float)
     for n in range(N):
         if n < 10:
             y[n] = x[n]
@@ -228,7 +280,7 @@ def ec1_LTI_punto_2(x, N):
 def ec2_LTI_punto_2(x, N):
     # x: Señal de entrada, N: numero de muestras
     
-    y = np.zeros(N, dtype = np.complex128)
+    y = np.zeros(N, dtype = float)
     for n in range(N):
         for n in range(N):
             if n < 10:
@@ -244,14 +296,14 @@ h2_punto2 = ec2_LTI_punto_2(delta(), N)
 respuesta_señal_f1_con_h1_punto2 = np.convolve(TS1.x1, h1_punto2, mode='full')
 respuesta_señal_f1_con_h2_punto2 = np.convolve(TS1.x1, h2_punto2, mode='full')
 
-def plotear_fig8_a_fig9():
-    plt.figure(8)
-    plt.title('Figura 8: Respuesta de f1 a partir de convolución con h1 (Punto 2)')
+def plotear_fig13_a_fig14():
+    plt.figure(13)
+    plt.title('Figura 13: Respuesta de f1 a partir de convolución con h1 (Punto 2)')
     plt.grid(True)
     plt.plot(respuesta_señal_f1_con_h1_punto2, 'o--', color = 'teal')
     plt.xlim(0, 2000)
     plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
+    plt.ylabel("Amplitud")
     # Añado una leyenda con los datos sobre la señal:
     info_fig1 = (
         f"Frecuencia de muestreo: {fs} s\n"
@@ -261,13 +313,13 @@ def plotear_fig8_a_fig9():
                 bbox=dict(facecolor="white", alpha=0.7, edgecolor="grey"))
     plt.tight_layout()
     
-    plt.figure(9)
-    plt.title('Figura 9: Respuesta de f1 a partir de convolución con h2 (Punto 2)')
+    plt.figure(14)
+    plt.title('Figura 14: Respuesta de f1 a partir de convolución con h2 (Punto 2)')
     plt.grid(True)
     plt.plot(respuesta_señal_f1_con_h2_punto2, 'o--', color = 'teal')
     plt.xlim(0, 2000)
     plt.xlabel("Tiempo [s]")
-    plt.ylabel("F(t)")
+    plt.ylabel("Amplitud")
     # Añado una leyenda con los datos sobre la señal:
     info_fig1 = (
         f"Frecuencia de muestreo: {fs} s\n"
@@ -279,8 +331,8 @@ def plotear_fig8_a_fig9():
     
 #%% Ploteo de prueba
 plotear_fig1_a_fig6()
-plotear_fig7()
-plotear_fig8_a_fig9()
+plotear_fig7_a_fig12()
+plotear_fig13_a_fig14()
 
 #%%##############
 ## Punto Bonus ##
