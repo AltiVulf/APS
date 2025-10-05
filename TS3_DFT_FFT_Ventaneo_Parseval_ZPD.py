@@ -43,7 +43,7 @@ def funcion_senoidal(ff, nn, amp = 1, dc = 0, ph = 0, fs = 1000):
 # Función para imprimir en dB
 def dB(X):
     X_shift = fftshift(X) # Armo la FFT centrada
-    X_abs = np.abs(X_shift) # Armo el módulo de la FFT (PSD)(la densidad espectral)
+    X_abs = np.abs(X_shift)**2 # Armo el módulo al cuadrado de la FFT (PSD)(la densidad espectral)
     X_max = np.max(X_abs) if np.max(X_abs)>0 else 1 # Calculo el máximo de la funcion para poder trasladar las funciones al mismo eje
     return 20 * np.log10(X_abs / X_max)
 
