@@ -65,12 +65,13 @@ flattop = window.flattop(N)
 # %% ECG sin Ruido
 def plot_ECG_sin_ruido():
     ECG_sin_ruido = np.load('ecg_sin_ruido.npy')
-    ff_P_ECG_SR, P_ECG_SR = periodogram(ECG_sin_ruido, fs = fs)
     
     cant_promedio = 20 # Cada cuantos sampleos promedio (a mayor valor, menor resolución)
     nperseg = ECG_sin_ruido.shape[0] // cant_promedio
     zpadding = nperseg * 5
     
+    ff_P_ECG_SR, P_ECG_SR = periodogram(ECG_sin_ruido, fs = fs, nfft = zpadding)
+
     ff_SR, Welch_ECG_SR = sig.welch(ECG_sin_ruido, fs = fs, window = 'hann', nperseg = nperseg)
     ff_ZP_SR, ZP_Welch_ECG_SR = sig.welch(ECG_sin_ruido, fs = fs, window = 'hann', nperseg = nperseg, nfft = zpadding)
     
@@ -128,12 +129,13 @@ def plot_PPG_sin_ruido():
     fs_PPG = 400
     
     PPG = np.genfromtxt('PPG.csv', delimiter=',', skip_header=1)  # Omitir la cabecera si existe
-    ff_P_PPG, P_PPG = periodogram(PPG, fs = fs_PPG)
 
     cant_promedio = 40 # Cada cuantos sampleos promedio (a mayor valor, menor resolución)
     nperseg = PPG.shape[0] // cant_promedio
     zpadding = nperseg * 5
     
+    ff_P_PPG, P_PPG = periodogram(PPG, fs = fs_PPG, nfft = zpadding)
+
     ff_PPG, Welch_PPG = sig.welch(PPG, fs = fs_PPG, window = 'hann', nperseg = nperseg)
     ff_ZP_PPG, ZP_Welch_PPG = sig.welch(PPG, fs = fs_PPG, window = 'hann', nperseg = nperseg, nfft = zpadding)
     
@@ -154,7 +156,7 @@ def plot_PPG_sin_ruido():
     plt.title('Figura 6: PPG sin ruido - Periodograma')
     plt.grid(True)
     plt.plot(ff_P_PPG, P_PPG, color = 'teal', label = 'PPG sin ruido - Periodograma')
-    plt.xlim(0, 0.05)
+    plt.xlim(0, 1)
     plt.xlabel("Frecuencia [Hz]")
     plt.ylabel("|X|\u00b2 [dB]")
     plt.legend()
