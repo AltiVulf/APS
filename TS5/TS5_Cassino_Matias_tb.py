@@ -40,7 +40,9 @@ import scipy.stats as st
 import pandas as pd
 # import sounddevice as sd
 
-#%% Funciones
+#%%############
+## Funciones ##
+###############
 plt.close('all')
 
 def ancho_de_banda(f,Px,porcentaje):
@@ -54,10 +56,10 @@ def ancho_de_banda(f,Px,porcentaje):
     return f_wb 
 
 def welch(cant_promedio,vector,zp,fs,window):
-    N=vector.shape[0] # N=Cantidad de muestras y accede al elemento 0
-    nperseg=N//cant_promedio # L=largo del bloque
+    N = vector.shape[0] # N=Cantidad de muestras y accede al elemento 0
+    nperseg = N//cant_promedio # L=largo del bloque
     print(f'El largo del bloque es: {nperseg}\n')
-    nfft=zp*nperseg
+    nfft = zp*nperseg
     # Periodograma
     f_w, Px_w = sig.welch(vector, fs=fs, nperseg=nperseg, window=window, nfft=nfft)
     return f_w, Px_w
@@ -68,6 +70,29 @@ def periodograma(cant_promedio, vector, zp, fs):
     nfft = zp*nperseg
     f_P, Px_P = periodogram(vector, fs = fs, nfft = nfft)
     return f_P, Px_P
+
+def blackman_tukey(x,  M = None, fs = 1000):    
+    # N = len(x)
+    x_z = x.shape
+    N = np.max(x_z)
+    df = fs/N
+    
+    if M is None:
+        M = N//5 # N/5 < M < N, por lo que si no selecciono nada, elijo N/5
+    
+    r_len = (2*M) - 1
+
+    xx = x.ravel()[:r_len];
+
+    # Correlaciono la señal para no tomar los valores de los "bordes"
+    r = np.correlate(xx, xx, mode='same') / r_len
+
+    Px_bt = np.abs(np.fft.fft(r * sig.windows.blackman(r_len), n = N) )
+    Px_bt = Px_bt.reshape(x_z)
+    
+    f_bt = np.linspace(0, (N-1)*df, N)
+
+    return f_bt, Px_bt;
 
 def plot_periodograma(f,Px,f_wb,title, f0 = 0):
     # Periodograma
@@ -81,12 +106,14 @@ def plot_periodograma(f,Px,f_wb,title, f0 = 0):
     plt.grid()
     return
 
-#%% Parámetros generales
+#%%#######################
+## Parámetros Generales ##
+##########################
 windows=['blackmanharris','hann','hamming','flattop','boxcar']
 
-##################
-# Lectura de ECG sin ruido
-##################
+############################
+# Lectura de ECG sin ruido #
+############################
 ecg_one_lead = np.load('Archivos_aux_TS5/ecg_sin_ruido.npy') # esto es N
 # plt.figure()
 # plt.plot(ecg_one_lead)
@@ -96,9 +123,9 @@ fs_ecg = 1000 # Hz
 cant_promedio_ecg = 14 # K
 zp_ecg=2
 
-####################################
-# Lectura de pletismografía (PPG) sin ruido
-##################
+#############################################
+# Lectura de pletismografía (PPG) sin ruido #
+#############################################
 ppg = np.load('Archivos_aux_TS5/ppg_sin_ruido.npy') # esto es N
 # plt.figure()
 # plt.plot(ppg)
@@ -108,9 +135,9 @@ fs_ppg = 400 # Hz
 cant_promedio_ppg = 5 # K
 zp_ppg=1
 
-####################
+#############################
 # Lectura de audio cucaracha#
-####################
+#############################
 # Cargar el archivo CSV como un array de NumPy
 fs_cucaracha, wav_data_cucaracha = sio.wavfile.read('sonido/la cucaracha.wav')
 # plt.figure()
@@ -122,9 +149,9 @@ fs_cucaracha, wav_data_cucaracha = sio.wavfile.read('sonido/la cucaracha.wav')
 cant_promedio_cucaracha = 9 # K
 zp_cucaracha=2
 
-####################
+##########################
 # Lectura de audio prueba#
-####################
+##########################
 # Cargar el archivo CSV como un array de NumPy
 fs_prueba, wav_data_prueba = sio.wavfile.read('sonido/prueba psd.wav')
 # plt.figure()
@@ -135,9 +162,9 @@ fs_prueba, wav_data_prueba = sio.wavfile.read('sonido/prueba psd.wav')
 cant_promedio_prueba = 10 # K = 8
 zp_prueba=1
 
-####################
+###########################
 # Lectura de audio silbido#
-####################
+###########################
 # Cargar el archivo CSV como un array de NumPy
 fs_silbido, wav_data_silbido = sio.wavfile.read('sonido/silbido.wav')
 # plt.figure()
@@ -148,9 +175,9 @@ fs_silbido, wav_data_silbido = sio.wavfile.read('sonido/silbido.wav')
 cant_promedio_silbido = 25 # K = 17
 zp_silbido=3
 
-####################
+#########################
 # Lectura de audio bonus#
-####################
+#########################
 fs_audio, wav_data_audio = sio.wavfile.read('sonido/knock.wav')
 # sd.play(wav_data_audio, fs_audio)
 if wav_data_audio.ndim > 1:
@@ -166,8 +193,10 @@ zp_audio=2
 #%% Invocación de las funciones del punto 1 y Bonus
 ff_P_ECG_SR, P_ECG_SR = periodograma(cant_promedio = cant_promedio_ecg, vector=ecg_one_lead, fs = fs_ecg, zp = zp_ecg)
 f_w_ecg, Px_w_ecg=welch(cant_promedio=cant_promedio_ecg,vector=ecg_one_lead,zp=zp_ecg,fs=fs_ecg,window=windows[1])
+# f_bt_ECG, Px_bt_ECG = blackman_tukey(x = ecg_one_lead, fs = fs_ecg)
 f_P_ECG = ancho_de_banda(ff_P_ECG_SR,P_ECG_SR,porcentaje=99)
 f_wb_ecg=ancho_de_banda(f_w_ecg,Px_w_ecg,porcentaje=99)
+# f_bt_ECG = ancho_de_banda(f, Px, porcentaje)
 
 ff_P_PPG, P_PPG = periodograma(cant_promedio = cant_promedio_ppg, vector=ppg, fs = fs_ppg, zp = zp_ppg)
 f_w_ppg, Px_w_ppg=welch(cant_promedio=cant_promedio_ppg,vector=ppg,zp=zp_ppg,fs=fs_ppg,window=windows[1])
@@ -197,6 +226,7 @@ f_wb_audio=ancho_de_banda(f_w_audio,Px_w_audio,porcentaje=99)
 #%% Invocación de las funciones del punto 2 y Bonus
 plot_periodograma(f_w_ecg, Px_w_ecg, f_wb_ecg, title="Periodograma ECG sin ruido por Welch")
 plot_periodograma(ff_P_ECG_SR, P_ECG_SR, f_P_ECG, title="Periodograma ECG sin ruido por método de Periodograma Modificado")
+plot_periodograma(f_bt_ECG, Px_bt_ECG, f_wb_ecg, title = "Periodograma ECG sin ruido con Blackman-Tukey")
 
 plot_periodograma(f_w_ppg, Px_w_ppg, f_wb_ppg, title="Periodograma PPG sin ruido por Welch")
 plot_periodograma(ff_P_PPG, P_PPG, f_P_PPG, title="Periodograma PPG sin ruido por método de Periodograma Modificado")
