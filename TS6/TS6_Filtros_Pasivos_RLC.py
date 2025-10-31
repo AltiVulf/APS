@@ -110,4 +110,3 @@ plotear_funcion_transferencia(a3, b3, label = 'T3', magnitud_fase_retardo = Fals
 plotear_funcion_transferencia(a1, b1, label = 'T1', xlim = (0, 10), xlim_s = True, polos_y_ceros = False, fig_inicial = 3)
 plotear_funcion_transferencia(a2, b2, label = 'T2', xlim = (0, 10), xlim_s = True, polos_y_ceros = False, fig_inicial = 3)
 plotear_funcion_transferencia(a3, b3, label = 'T3', xlim = (0, 10), xlim_s = True, polos_y_ceros = False, fig_inicial = 3)
-
